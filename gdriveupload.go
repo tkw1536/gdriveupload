@@ -19,6 +19,7 @@ type Options struct {
 	CredsPath  string // Path to service account credentials
 	FilePath   string // Path to file that should be uploaded
 	FolderID   string // ID of folder to upload content in
+	AllDrives  bool   // are we supporting all drives?
 	OwnerEmail string // Email of user to set ownership for
 }
 
@@ -29,6 +30,7 @@ func readOptions() (opts Options) {
 	flag.StringVar(&opts.FilePath, "filepath", "", "Path of file to be uploaded")
 	flag.StringVar(&opts.FolderID, "folderid", "", "ID of folder to upload file to")
 	flag.StringVar(&opts.OwnerEmail, "owner", "", "Owner to transfer file to")
+	flag.BoolVar(&opts.AllDrives, "alldrives", false, "Support all drives")
 	flag.Parse()
 
 	// check that there aren't any extra arguments
@@ -91,7 +93,7 @@ func uploadFile(opts Options, service *drive.Service) (err error) {
 	}
 
 	// create the file
-	_, err = service.Files.Create(f).Media(content).Do()
+	_, err = service.Files.Create(f).SupportsAllDrives(opts.AllDrives).Media(content).Do()
 	return err
 }
 
