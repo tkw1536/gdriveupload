@@ -1,4 +1,4 @@
-# gdrivebackup
+# gdriveupload
 
 This is a quick tool to upload a specific file to a specific google drive folder and account. 
 Needs a service account with domain-wide delegation enabled. 

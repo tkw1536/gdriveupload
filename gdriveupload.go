@@ -14,7 +14,7 @@ import (
 	"google.golang.org/api/drive/v3"
 )
 
-// Options for a run of gdrivebackup
+// Options for a run of gdriveupload
 type Options struct {
 	CredsPath  string // Path to service account credentials
 	FilePath   string // Path to file that should be uploaded
