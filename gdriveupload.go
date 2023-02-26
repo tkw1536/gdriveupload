@@ -1,17 +1,17 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 
-	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 	"golang.org/x/oauth2/jwt"
 
 	"google.golang.org/api/drive/v3"
+	"google.golang.org/api/option"
 )
 
 // Options for a run of gdriveupload
@@ -64,7 +64,7 @@ func readOptions() (opts Options) {
 }
 
 func readCredentials(opts Options) (service *drive.Service, err error) {
-	bytes, err := ioutil.ReadFile(opts.CredsPath)
+	bytes, err := os.ReadFile(opts.CredsPath)
 	if err != nil {
 		return
 	}
@@ -75,8 +75,8 @@ func readCredentials(opts Options) (service *drive.Service, err error) {
 	}
 	config.Subject = opts.OwnerEmail
 
-	client := config.Client(oauth2.NoContext)
-	return drive.New(client)
+	client := config.Client(context.Background())
+	return drive.NewService(context.Background(), option.WithHTTPClient(client))
 }
 
 func uploadFile(opts Options, service *drive.Service) (err error) {
